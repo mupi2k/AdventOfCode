@@ -45,7 +45,7 @@ Might have been faster without the "here string", but I'm not sure the differenc
 ### Challenge 1
 
 ```bash
-awk ' {if ($1 == "forward") {H = (H + $2); D = (D + (A * $2))} if ($1 == "up") A = (A - $2); if ($1 == "down") A = (A + $2); printf("%s => H=%d D=%d T=%d\n", $0, H, D, H * D) }' aoc-input-2
+awk ' {if ($1 == "forward") H = (H + $2); if ($1 == "up") D = (D - $2); if ($1 == "down") D = (D + $2); printf("%s => H=%d D=%d T=%d\n", $0, H, D, H * D) }' aoc-input-2
 ```
 
 No more here string....
