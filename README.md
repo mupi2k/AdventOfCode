@@ -4,6 +4,7 @@ A repository for my solutions to the 2021 Advent of Code coding challenge.
 
 Because I have chosen to do these as pure `Bash/Awk`, there really isn't going to be much code here.
 
+---
 ## Day 1 (Dec 1)
 ### Challenge 1
 
@@ -11,10 +12,12 @@ Because I have chosen to do these as pure `Bash/Awk`, there really isn't going t
 
 Not elegant, but it works. And it's FAST:
 
-> time awk '{for (i=2;i<=NF;i++) {if ($i > $(i-1)) print "increase" } }' <<< $(cat aoc-input-1 | tr '\n' ' ') | wc -l\n
-    1722\n
+```bash
+ time awk '{for (i=2;i<=NF;i++) {if ($i > $(i-1)) print "increase" } }' <<< $(cat aoc-input-1 | tr '\n' ' ') | wc -l
+    1722
     awk '{for (i=2;i<=NF;i++) {if ($i > $(i-1)) print "increase" } }' <<<   0.01s user 0.01s system 105% cpu 0.014 total
     wc -l  0.00s user 0.00s system 27% cpu 0.014 total
+```
 
 I doubt many of the more "elegant" solutions are faster; I'd wager most are slower
 
@@ -22,14 +25,16 @@ I doubt many of the more "elegant" solutions are faster; I'd wager most are slow
 
 `awk '{for (i=3;i<=NF;i++) { printf("%d ", ($i + $(i-1) + $(i-2) ) ) }  }' <<< $(cat aoc-input-1 | tr '\n' ' ') | awk '{for (i=2;i<=NF;i++) {if ($i > $(i-1)) print "increase" } }' | wc -l`
 
-> time awk '{for (i=3;i<=NF;i++) { printf("%d ", ($i + $(i-1) + $(i-2) ) ) }  }' <<< $(cat aoc-input-1 | tr '\n' ' ') | awk '{for (i=2;i<=NF;i++) {if ($i > $(i-1)) print "increase" } }' | wc -l
+```bash
+ time awk '{for (i=3;i<=NF;i++) { printf("%d ", ($i + $(i-1) + $(i-2) ) ) }  }' <<< $(cat aoc-input-1 | tr '\n' ' ') | awk '{for (i=2;i<=NF;i++) {if ($i > $(i-1)) print "increase" } }' | wc -l
     1748
 awk '{for (i=3;i<=NF;i++) { printf("%d ", ($i + $(i-1) + $(i-2) ) ) }  }' <<<  0.01s user 0.01s system 105% cpu 0.016 total
 awk '{for (i=2;i<=NF;i++) {if ($i > $(i-1)) print "increase" } }'  0.00s user 0.00s system 32% cpu 0.017 total
 wc -l  0.00s user 0.00s system 21% cpu 0.016 total
+```
 
 Might have been faster without the "here string", but I'm not sure the difference is measurable.
-
+---
 ## Day 2 (Dec 2)
 ### Challenge 1
 
@@ -47,4 +52,4 @@ still fast, too :D
 
 > awk  aoc-input-2  0.00s user 0.00s system 85% cpu 0.008 total
 
-
+---
