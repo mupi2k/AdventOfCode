@@ -10,11 +10,12 @@ Because I have chosen to do these as pure `Bash/Awk`, there really isn't going t
 ` awk '{for (i=2;i<=NF;i++) {if ($i > $(i-1)) print "increase" } }' <<< $(cat aoc-input-1 | tr '\n' ' ') | wc -l `
 
 Not elegant, but it works. And it's FAST:
-`time awk '{for (i=2;i<=NF;i++) {if ($i > $(i-1)) print "increase" } }' <<< $(cat aoc-input-1 | tr '\n' ' ') | wc -l
-    1722
+
+> time awk '{for (i=2;i<=NF;i++) {if ($i > $(i-1)) print "increase" } }' <<< $(cat aoc-input-1 | tr '\n' ' ') | wc -l\n
+    1722\n
     awk '{for (i=2;i<=NF;i++) {if ($i > $(i-1)) print "increase" } }' <<<   0.01s user 0.01s system 105% cpu 0.014 total
     wc -l  0.00s user 0.00s system 27% cpu 0.014 total
-    `
+
 I doubt many of the more "elegant" solutions are faster; I'd wager most are slower
 
 ### Challenge 2
