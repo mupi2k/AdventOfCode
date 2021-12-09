@@ -62,3 +62,95 @@ awk ' {if ($1 == "forward") {H = (H + $2); D = (D + (A * $2))} if ($1 == "up") A
 > awk  aoc-input-2  0.00s user 0.00s system 85% cpu 0.008 total
 
 ---
+## Day 3 (Dec 3)
+### Challenge 1
+
+I got complaints that my code is too unreadable. So I broke it into a multiline script for readability.
+
+```bash
+awk '\
+  {\
+    for (i=length($1);i>=1;i--)\
+      {\
+        if (substr($1, i, 1) == "1") \
+          ONE[i]++; \
+        else \
+          ZERO[i]++;\
+        if (ONE[i] > ZERO[i]) \
+          {\
+            G[i]=1;\
+            E[i]=0\
+          } \
+        else \
+          {\
+            G[i]=0;\
+            E[i]=1\
+          } \
+        }; \
+        gamma=0; \
+        eps=0; \
+        pow=0; \
+        for (i=length($1);i>=0;i--) \
+          {\
+            printf("%d = %d || %d = %d\n", G[i], 2^pow, E[i], 2^pow); \
+            if (G[i]) gamma+=2^pow; \
+            if (E[i]) eps+=2^pow; \
+            pow++ \
+          };\
+          printf("G=%d E=%d R=%d\n", gamma, eps, gamma*eps) \
+        }'\
+        aoc-input-3
+```
+
+A lot more involved, but still under a tenth of a second...
+
+> awk  aoc-input-3  0.07s user 0.01s system 96% cpu 0.085 total
+
+### Challenge 2
+
+Trying to run this directly as a command-line script proved cumbersome. I wound up resorting to using gawk for the "true" multidimensional arrays.  I also switched to using a file for input.
+
+Once I got the logic right, it's still super fast:
+
+```
+time gawk -f aoc-3.awk aoc-input-3
+reading data
+........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................done
+pass 1: 1000 to start
+ pass 2: 528 to start
+ pass 3: 268 to start
+ pass 4: 136 to start
+ pass 5: 75 to start
+ pass 6: 45 to start
+ pass 7: 24 to start
+ pass 8: 14 to start
+ pass 9: 10 to start
+ pass 10: 7 to start
+ pass 11: 4 to start
+ pass 12: 2 to start
+ 011001100111
+pass 1: 1000 to start
+ pass 2: 472 to start
+ pass 3: 219 to start
+ pass 4: 96 to start
+ pass 5: 44 to start
+ pass 6: 21 to start
+ pass 7: 10 to start
+ pass 8: 2 to start
+ 101010000100
+1 = 1 | 1 | 0 = 0
+1 = 3 | 2 | 0 = 0
+1 = 7 | 4 | 1 = 4
+0 = 7 | 8 | 0 = 4
+0 = 7 | 16 | 0 = 4
+1 = 39 | 32 | 0 = 4
+1 = 103 | 64 | 0 = 4
+0 = 103 | 128 | 1 = 132
+0 = 103 | 256 | 0 = 132
+1 = 615 | 512 | 1 = 644
+1 = 1639 | 1024 | 0 = 644
+0 = 1639 | 2048 | 1 = 2692
+oxy=1639 co=2692 lsr=4412188
+gawk -f aoc-3.awk aoc-input-3  0.01s user 0.00s system 74% cpu 0.016 total
+```
+
