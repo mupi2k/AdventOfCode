@@ -154,3 +154,46 @@ oxy=1639 co=2692 lsr=4412188
 gawk -f aoc-3.awk aoc-input-3  0.01s user 0.00s system 74% cpu 0.016 total
 ```
 
+## Day 4
+### Challenge 1
+
+After Day 3, this didn't seem as hard. Maybe I am just leveling up....
+
+```
+ gawk -f aoc-4-1.awk aoc-input-4                                    AWS core ENV  INSERT   master  +1 U3
+ 27
+ 14
+ 70
+ 7
+ 85
+ 66
+ 65
+ 57
+ 68
+ 23
+ 33
+ 78
+ 4
+ 84
+ 25
+ 18
+ 43
+ 71
+ 76
+ 61
+ 34
+ 82
+ 93
+ 74
+ BINGO card= 55
+ XX XX  5 69 XX
+ XX 60 40 73  6
+ XX 54 67 32 38
+ XX 62 17 51 86
+ XX 88 99  3 16
+ card score = 64084
+ ```
+
+ finally cracked 0.1 seconds:
+ > gawk -f aoc-4-1.awk aoc-input-4  0.03s user 0.00s system 87% cpu 0.041 total
+
