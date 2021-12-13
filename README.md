@@ -160,7 +160,7 @@ gawk -f aoc-3.awk aoc-input-3  0.01s user 0.00s system 74% cpu 0.016 total
 After Day 3, this didn't seem as hard. Maybe I am just leveling up....
 
 ```
- gawk -f aoc-4-1.awk aoc-input-4                                    AWS core ENV  INSERT   master  +1 U3
+ gawk -f aoc-4-1.awk aoc-input-4
  27
  14
  70
@@ -194,6 +194,25 @@ After Day 3, this didn't seem as hard. Maybe I am just leveling up....
  card score = 64084
  ```
 
- finally cracked 0.1 seconds:
+ Still no slouch...
+
  > gawk -f aoc-4-1.awk aoc-input-4  0.03s user 0.00s system 87% cpu 0.041 total
+
+### Challenge 2
+
+Having solved the problem of finding a bingo, we just have to keep looping until the *last* bingo. It's very simple logic, at thhat point.
+
+```
+time gawk -f aoc-4-2.awk aoc-input-4
+XX XX XX XX XX
+48 XX XX 29 XX
+XX 91 XX XX XX
+3 XX XX XX XX
+XX 89 53 XX XX
+card score = 12833
+gawk -f aoc-4-2.awk aoc-input-4  0.10s user 0.00s system 94% cpu 0.106 total
+```
+
+Still running at 0.1 seconds. That's a lot more than the 1st challenge, but I'm repeatedly checking the length of the arrays, so it makes sense.
+
 
