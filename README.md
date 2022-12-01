@@ -5,6 +5,7 @@ A repository for my solutions to the 2022 Advent of Code coding challenge.
 Because I have chosen to do these as pure `Bash/Awk`, there really isn't going to be much code here.
 
 As this is my second AoC, I've moved all of last year's stuff to `./2021/`; This year's challenges are starting off in `./2022`.
+
 ---
 ## Day 1 (Dec 1)
 ### Challenge 1
