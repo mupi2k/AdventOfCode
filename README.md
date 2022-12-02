@@ -51,4 +51,43 @@ awk -f aoc-1-1.awk input-l | sort -n | tail -3 | awk '{ sum += $0 } END { print 
 ```
 
 ---
+## Day 2 (Dec 2)
+### Challenge 1
+
+This challenge is deceptively simple. It seems like it's going to require some kind of array/matrix.  But it turns out that you can really break it down to a handful of `if...then` statements.  Even the scoring model is pretty straightforward.
+
+Again, this kind of text processing is what `awk` and the CLI in general were written for:
+```bash
+time awk -f 2-1.awk input-2
+final score: 14069
+awk -f 2-1.awk input-2  0.01s user 0.00s system 77% cpu 0.016 total
+```
+
+Under 2 hundredths of a second to process 2500 lines of text... not too shabby.
+
+In case you are wondering how I know that I have 2500 lines in that file:
+```bash
+wc -l input-2
+    2500 input-2
+```
+Yes, vim would tell you how many lines are in that file if I copy/pasted from the AoC website, but why would I do that when there are cli tools for exactly this purpose?
+```bash
+curl -H 'cookie: session=5361645f5fd400dc6c1e8af5e-nice-try-0afe8afcccda5465bfd3fc61-not-my-real-session-cookie-ff0ed57e423ad' "https://adventofcode.com/2022/day/2/input" -o input-2
+```
+
+I didn't even look at the data, beyond confirming that it looked like what I expected.
+
+### Challenge 2
+
+The revised parameters actually simplify the logic considerably. I could have done something similar for the first part, which in turn would actually have made it easier to adapt, but it seemed better at the time to separate the 'win-lose-draw' logic from the 'points-per-shape' logic. With the revised decoding key, that no longer makes sense, but the basic logical structure remains sound.
+
+```bash
+time awk -f 2-2.awk input-2
+final score: 12411
+awk -f 2-2.awk input-2  0.01s user 0.00s system 85% cpu 0.014 total
+```
+
+Because there are less `if` statements, this turns out to be slightly faster.  The whole thing could potentially be optimezed with `if...else` instead, for sufficiently large data sets. In this case, I did test that approach for both challenge 1 and 2 (`./2022/2-1v2.awk` and `./2022/2-2v2.awk`), but for this sample size it wasn't a measurable difference.
+
+---
 
