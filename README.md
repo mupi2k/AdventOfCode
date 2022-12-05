@@ -90,4 +90,37 @@ awk -f 2-2.awk input-2  0.01s user 0.00s system 85% cpu 0.014 total
 Because there are less `if` statements, this turns out to be slightly faster.  The whole thing could potentially be optimezed with `if...else` instead, for sufficiently large data sets. In this case, I did test that approach for both challenge 1 and 2 (`./2022/2-1v2.awk` and `./2022/2-2v2.awk`), but for this sample size it wasn't a measurable difference.
 
 ---
+## Day 3
+### Challenge 1
 
+I don't really computer on the weekend, so I fell a bit behind. Hopefully I will be able to catch up...
+
+This is another challenge where AWK is fairly well suited to the task. In particular, for the calculation of the "score", AWK's `match` or `index()` functions can work for arbitrary strings, and will reliably return the correct index. This means that once the stipulated criteria were identified, it was easy to calculate the score.
+
+For part 1, I used a single awk program to split the string in half, and then compare the two halves. `gawk` would have simplified the task slightly, but doing it this way allowed me to remain POSIX compliant.
+
+And again, awk churns through the 300 lines of input blazing fast:
+```bash
+time awk -f 3-1.awk input-3
+total is: 7766
+awk -f 3-1.awk input-3  0.01s user 0.01s system 71% cpu 0.021 total
+```
+
+Printing out all the outputs slows things down; while that might be useful in a real-life scenario, that's not necessary or helpful here.
+
+### Challenge 3
+
+I chose to adopt a two-step process for this challenge, and I realized that I probably overcomplicated the first part.
+
+The first awk program just creates the sets of three required for the second program. This is sufficiently straightforward that I didn't bother putting it into an actual file. I just typed in in, and then used a bash pipe (|) to feed the output of that into the input for the second program that did the actual comparison.
+
+Even though this challenge is more computation-heavy, because the algorithm is much simpler, it's faster, executing in roughly half the time of the first challenge;
+```bash
+time awk 'BEGIN {i=1} {printf("%s ",$0); i += 1; if (i > 3) {print ""; i=1} } ' input-3 | awk -f 3-2.awk
+total is: 2415
+awk 'BEGIN {i=1} {printf("%s ",$0); i += 1; if (i > 3) {print ""; i=1} } '   0.00s user 0.00s system 73% cpu 0.006 total
+awk -f 3-2.awk  0.00s user 0.00s system 78% cpu 0.007 total
+```
+0.007 + 0.006 = 0.013, compared to 0.021 for the first part.
+
+I'm quite happy with the results so far.
