@@ -124,3 +124,73 @@ awk -f 3-2.awk  0.00s user 0.00s system 78% cpu 0.007 total
 0.007 + 0.006 = 0.013, compared to 0.021 for the first part.
 
 I'm quite happy with the results so far.
+
+---
+## Day 4
+### Challenge 1
+
+placeholder for when I get back to this
+
+### Challenge 2
+
+placeholder
+
+---
+## Day 5
+### Challenge 1
+
+Will I be able to catch up?
+
+### Challenge 2
+
+Sorry this will mess with "just scroll to the bottom for the latest update"
+
+---
+## Day 6
+### Challenge 1
+
+I happened to be awake at midnight EST, so I skipped ahead to get the points...
+
+After a couple of false starts due to faulty logic, I got this to work. However, because of the way I built this, I needed only to change a variable assignment to finish challenge 2, once I got the bugs worked out.
+
+The algorithm is pretty simple:
+1. grab a chunk of the string the size we need (4 chars for challenge 1)
+2. compare the first character of that chunk to the remaining characters, looking for a match
+3. if no match is found, compare the next character to the remaining characters
+4. repeat steps 3 & 4 until we have compared every character to all of the following characters
+5. if no match is found, we have enough unique characters, so print the starting position of the match and quit.
+
+For challenge 1, that means the inner loop must run 3 times. For challenge 2, it had to run 13 times...
+I don't have to compare every character to *every* other character in the chunk, because I've *already* compared to all the previous characters. I could probably optimize by skipping the rest of the loop if I find a match, rather that completing the entire inner loop every time...
+
+However, it's still pretty fast;
+```bash
+time awk -f 6-1.awk input-6
+1658
+awk -f 6-1.awk input-6  0.01s user 0.00s system 87% cpu 0.013 total
+```
+
+After adding that optimization:
+```bash
+time awk -f 6-1v2.awk input-6
+1658
+awk -f 6-1v2.awk input-6  0.01s user 0.00s system 85% cpu 0.011 total
+```
+
+### Challenge 2
+
+As mentioned above, I only had to change the size of the chunk to complete part 2. This was super easy:
+```bash
+time awk -f 6-2.awk input-6
+2260
+awk -f 6-2.awk input-6  0.03s user 0.00s system 94% cpu 0.038 total
+```
+
+Now we're starting to tax the system a little bit.
+
+Interestingly, I would have expected adding the "early out" from the inner loop to have more impact given the larger loop size, but the constraint appears to be something else. While it *is* faster, it's not appreciably so:
+```bash
+time awk -f 6-2v2.awk input-6
+2260
+awk -f 6-2v2.awk input-6  0.03s user 0.00s system 94% cpu 0.037 total
+```
