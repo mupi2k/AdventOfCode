@@ -126,14 +126,59 @@ awk -f 3-2.awk  0.00s user 0.00s system 78% cpu 0.007 total
 I'm quite happy with the results so far.
 
 ---
-## Day 4
+## Day 4 (Dec 4)
 ### Challenge 1
 
-placeholder for when I get back to this
+Today was a challenge for me. I was able to complete it, but it took a lot of false starts. The logic seems pretty ugly.
+
+In the end a key realization for me was that if *either* the first or second parts are the same, there's automatically overlap.  This causes the traditional `<=` logic to break down, so I had to evaluate for `==`, `<` and `>` separately.  Also, I have a tendency to forget that `=` is not the same as `==` in virtually any language. I've been doing this long enough to know better, but maybe you can find comfort in knowing that you are not alone if you struggle with that. Or maybe it is just me....
+
+In any case, logic problems aside, the awk is actually not overly complex, once you get everything evaluating in the correct order.
+
+In the process of troubleshooting my logic, as all good progammers do, I inserted some `printf()` statements. I was curious about the real performance impact of the extra printf's, so although I removed most of them, I kept one so I could compare them. Turns out to have less impact than I though, though it could be inferred that adding more could have a significantly larger impact. Still, it's well under a second, and it can provide valuable insight to what your program is doing:
+
+With the `printf()`:
+```bash
+time awk -F ',' -f 4-1.awk input-4
+    3 : 87-89,7-88 = no match
+    4 : 82-93,44-82 = no match
+...
+    995 : 7-65,2-7 = no match
+    999 : 7-96,3-8 = no match
+511 contained in 1000 linesawk -F ',' -f 4-1.awk input-4  0.01s user 0.00s system 74% cpu 0.012 total
+```
+
+Without the `printf()`:
+```bash
+time awk -F ',' -f 4-1v2.awk input-4
+511 contained in 1000 linesawk -F ',' -f 4-1v2.awk input-4  0.01s user 0.00s system 81% cpu 0.009 total
+```
+
+As you can see, it's measurable, but not huge. Then agin, scaled to millions of lines instead of 1000, that 0.003 seconds can add up.
 
 ### Challenge 2
 
-placeholder
+After my struggle with part 1, this one was a piece of cake. I copied my initialization part and `END` clause from part one.  Got it on the first try!
+
+Again, with a spurious `printf()`:
+```bash
+time awk -F ',' -f 4-2.awk input-4
+   14 : 29-75,28-28 = no match
+   15 : 18-74,1-17 = no match
+   17 : 68-68,27-67 = no match
+...
+  976 : 4-11,12-12 = no match
+  988 : 26-26,27-96 = no match
+821 overlap in 1000 linesawk -F ',' -f 4-2.awk input-4  0.01s user 0.01s system 61% cpu 0.019 total
+```
+
+And without:
+```bash
+time awk -F ',' -f 4-2v2.awk input-4
+821 overlap in 1000 linesawk -F ',' -f 4-2v2.awk input-4  0.01s user 0.00s system 67% cpu 0.013 total
+```
+
+As with part one, not a huge difference, but enough to matter with a sufficiently large data set. In other words, choose your weapons wisely :D
 
 ---
 ## Day 5
@@ -146,7 +191,7 @@ Will I be able to catch up?
 Sorry this will mess with "just scroll to the bottom for the latest update"
 
 ---
-## Day 6
+## Day 6 (Dec 6)
 ### Challenge 1
 
 I happened to be awake at midnight EST, so I skipped ahead to get the points...
