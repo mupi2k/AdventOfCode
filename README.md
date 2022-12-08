@@ -239,3 +239,57 @@ time awk -f 6-2v2.awk input-6
 2260
 awk -f 6-2v2.awk input-6  0.03s user 0.00s system 94% cpu 0.037 total
 ```
+
+---
+## Day 7 (Dec 7)
+### Challenge 1
+
+I'm not going to lie, today's challenge *really* irritated me.
+- Any system with a terminal that uses a root-based file system, and has `rm` and `ls` as commands also probably supports the use of the `du` command.
+- While most of the problems so far require an amount of suspension of disbelief, at least the basic algorithm might have useful real-world applications. However, today's algorithm will not give you any useful real-world results. The problem statement sort-of acknowleges this, but it also pretty much obviates the use of any of the tools a competent Systems Engineer might use. If you try to use any of this algorithm to solve a real-world 'device full' problem, you may well wind up making things worse.
+
+The *correct* answer would be to use `du -chx --max-depth=1 /` and then progress through the tree looking for things you know are safe to delete, which will probably be in `/var/log`.
+
+In the end, most of the trouble I had with getting the "right" answers involved what amounts to a recursion problem. I didn't want to use recursion, because in a *real world* situation, you might well face device constraints like memory limits that preclude building a giant in-memory map. On most modern computing devices you are unlikely to run into that problem, but then again, the theoretical device in question is already fairly constrained; similarly, we may face an embedded device such as an ESP8266 or ESP32 which may be quite constained.  My awk-based solution would run fine on those devices, and even smaller devices such as many Arduinos, which may not be capable of running cPython or Rust.
+
+Once I was able to figure out how to get the size of a directory to pass correctly up to the parent on a `cd ..`, (which wouldn't be necessary in the real world...can you tell I'm still salty about that bit? :D ), I was able to get my tree-based solution to work and print out the correct size summary for each directory. From there, I just needed to look over those results, and total up the ones we care about:
+```bash
+awk -f 7-1.awk input-7 | awk ' {if ($2 <= 100000) {total += $2; } } END { print "total: " total}'
+total: 1077191
+```
+
+Running inside of `time`:
+```bash
+time awk -f 7-1.awk input-7 | awk ' {if ($2 <= 100000) {total += $2; } } END { print "total: " total}'
+total: 1077191
+awk -f 7-1.awk input-7  0.01s user 0.00s system 83% cpu 0.010 total
+awk ' {if ($2 <= 100000) {total += $2; } } END { print "total: " total}'  0.00s user 0.00s system 32% cpu 0.010 total
+```
+0.02 seconds total. Pretty good for a scripting language originally developed 50 years ago...
+
+### Challenge 2
+
+With the first challenge sorted out, the second was pretty easy:
+I just need to sort the results from challenge 1 so that the biggest (`/`) directory is first, and use that value to figure out how much space I need to find, then print all the matching results. Because the results are *already* sorted largest to smallest, the last line of output will be what I want. For a more concise output, I could add a `tail -1` to the pipe, but this output is short enough:
+```bash
+time awk -f 7-1.awk input-7 | sort -nrk 2 | awk -f 7-2.awk
+used: 45174025
+avail: 24825975
+Need: 5174025
+/: 45174025
+/lqblqtng/: 27642694
+/lqblqtng/vgt/: 25773269
+/lqblqtng/vgt/jqnvscr/: 11694215
+/hdh/: 10851370
+/hdh/cljdmh/: 9665817
+/lqblqtng/vgt/tmf/: 9510609
+/lqblqtng/vgt/tmf/rdcsmpfm/: 6824953
+/lqblqtng/vgt/tmf/rdcsmpfm/lqblqtng/: 6175618
+/hdh/cljdmh/hdh/: 5649896
+awk -f 7-1.awk input-7  0.01s user 0.00s system 81% cpu 0.012 total
+sort -nrk 2  0.00s user 0.00s system 40% cpu 0.012 total
+awk -f 7-2.awk  0.00s user 0.00s system 39% cpu 0.011 total
+```
+A bit longer to execute due to the overhead of spinning up two additional processes, but still, 0.03 seconds total seems pretty good to me
+
+
