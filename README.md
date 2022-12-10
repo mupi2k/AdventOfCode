@@ -292,4 +292,34 @@ awk -f 7-2.awk  0.00s user 0.00s system 39% cpu 0.011 total
 ```
 A bit longer to execute due to the overhead of spinning up two additional processes, but still, 0.03 seconds total seems pretty good to me
 
+---
+## Day 8 (Dec 8)
+### Challenge 1
 
+Despite my frustration yesterday, I kept going because it is pretty fun, even if it's annoying.
+
+The basic logic here wasn't difficult, though it took longer than strictly necessary because I kept trying to short circuit the logic in order to get results faster.
+
+In the end, I am actually testing all the way to the edge for each case; After I succeeded, I realized how to speed up the checks with short-circuit, but then in part 2, you have to check every tree all the way to the edge anyway.
+
+It's a little disconcerting to have a thing run for 2 seconds when you are used to sub-second results, though, but still, considering that I am checking 9801 squares 98 times in each direction (9801 * 196), that's almost 2 million checks in 1.5 seconds...that's pretty fast.
+
+```bash
+time awk -f 8-1.awk input-8
+99 lines read
+1688 visible in 9801 cells.
+awk -f 8-1.awk input-8  1.43s user 0.00s system 99% cpu 1.433 total
+```
+
+### Challenge 2
+
+I forgot to copy the original file before I started work on part 2...
+
+As expected, because I was already running all 2,000,000 checks for part 1, part 2 wasn't difficult. I just had to throw a score calculation into the program, and add a new array to store the score. As a result, there isn't a large time difference between the two programs.
+
+```bash
+time awk -f 8-2.awk input-8
+99 lines read
+1688 visible in 9801 cells. Max score is 410400
+awk -f 8-2.awk input-8  1.46s user 0.01s system 99% cpu 1.466 total
+```
